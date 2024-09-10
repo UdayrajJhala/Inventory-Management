@@ -15,7 +15,7 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   /* Change to full width */
-  max-width: 1000px;
+  width: 1000px;
   /* Reduce the max-width */
   padding: 20px;
 }
