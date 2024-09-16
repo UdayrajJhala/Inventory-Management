@@ -9,10 +9,9 @@ const App = () => {
   const [editMode, setEditMode] = useState(false);
   const [editProduct, setEditProduct] = useState(null);
 
-  // Fetch products from the backend
   const fetchProducts = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/products"); // Updated URL
+      const response = await fetch("http://localhost:5000/api/products"); 
       if (!response.ok) {
         throw new Error("Failed to fetch products");
       }
@@ -27,11 +26,10 @@ const App = () => {
     fetchProducts();
   }, []);
 
-  // Handle adding or editing a product
   const handleSubmit = async (formData, isEdit) => {
     const url = isEdit
-      ? `http://localhost:5000/api/products/${editProduct.id}` // Updated URL
-      : "http://localhost:5000/api/products"; // Updated URL
+      ? `http://localhost:5000/api/products/${editProduct.id}` 
+      : "http://localhost:5000/api/products"; 
     const method = isEdit ? "PUT" : "POST";
 
     try {
@@ -53,13 +51,11 @@ const App = () => {
     }
   };
 
-  // Handle editing a product
   const handleEdit = (product) => {
     setEditMode(true);
     setEditProduct(product);
   };
 
-  // Handle deleting a product
   const handleDelete = async (id) => {
     try {
       const response = await fetch(`http://localhost:5000/api/products/${id}`, {

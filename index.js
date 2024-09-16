@@ -8,11 +8,9 @@ const app = express();
 app.use(cors());
 dotenv.config();
 
-// Use body-parser to parse incoming requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Connect to PostgreSQL database
 const db = new pg.Client({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -29,7 +27,6 @@ db.connect((err) => {
   }
 });
 
-// API to get all products
 app.get("/api/products", async (req, res) => {
   try {
     const result = await db.query("SELECT * FROM products");
@@ -40,13 +37,11 @@ app.get("/api/products", async (req, res) => {
   }
 });
 
-// API to update a product by ID
 app.put("/api/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { name, category, quantity, price } = req.body;
 
-    // Check if the product exists
     const checkProduct = await db.query(
       "SELECT * FROM products WHERE id = $1",
       [id]
@@ -55,7 +50,6 @@ app.put("/api/products/:id", async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Update the product
     const result = await db.query(
       "UPDATE products SET name = $1, category = $2, quantity = $3, price = $4 WHERE id = $5 RETURNING *",
       [name, category, quantity, price, id]
@@ -67,20 +61,17 @@ app.put("/api/products/:id", async (req, res) => {
   }
 });
 
-// API to create or update a product
 app.post("/api/products", async (req, res) => {
   try {
     const { id, name, category, quantity, price } = req.body;
     let result;
 
     if (id) {
-      // Update product if id is provided
       result = await db.query(
         "UPDATE products SET name = $1, category = $2, quantity = $3, price = $4 WHERE id = $5 RETURNING *",
         [name, category, quantity, price, id]
       );
     } else {
-      // Insert a new product
       result = await db.query(
         "INSERT INTO products (name, category, quantity, price) VALUES ($1, $2, $3, $4) RETURNING *",
         [name, category, quantity, price]
@@ -94,7 +85,6 @@ app.post("/api/products", async (req, res) => {
   }
 });
 
-// API to delete a product by ID
 app.delete("/api/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -115,11 +105,6 @@ app.delete("/api/products/:id", async (req, res) => {
   }
 });
 
-// Remove static file serving middleware if you don't need it
-// Comment this out if you're only using the API
-// app.use(express.static("public"));
-
-// Define a fallback route to handle incorrect API calls
 app.get("*", (req, res) => {
   res.status(404).json({ message: "API endpoint not found" });
 });

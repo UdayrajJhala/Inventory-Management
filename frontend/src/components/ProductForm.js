@@ -1,4 +1,3 @@
-// src/components/ProductForm.js
 import React, { useState, useEffect } from "react";
 
 const ProductForm = ({ onSubmit, editMode, editProduct }) => {

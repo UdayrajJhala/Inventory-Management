@@ -1,4 +1,3 @@
-// src/components/ProductTable.js
 import React from "react";
 
 const ProductTable = ({ products, onEdit, onDelete }) => {
